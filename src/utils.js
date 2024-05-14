@@ -29,3 +29,17 @@ export function createProgram(gl, vertexShader, fragementShader) {
   gl.useProgram(program);
   return program;
 }
+
+/**
+ * 生成随机颜色
+ *
+ * @returns 返回一个包含 r、g、b、a 四个属性的对象，分别表示颜色的红、绿、蓝、透明度值
+ */
+export function randomColor() {
+  return {
+    r: Math.random() * 255,
+    g: Math.random() * 255,
+    b: Math.random() * 255,
+    a: 1,
+  };
+}
