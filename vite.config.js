@@ -6,7 +6,7 @@ import glsl from "vite-plugin-glsl";
 export default defineConfig({
   build: {
     rollupOptions: {
-      input: "./index.js",
+      input: "./index_triangle.js",
     },
   },
 

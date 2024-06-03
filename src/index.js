@@ -1,6 +1,6 @@
-import a_farg from "./shader/index.frag";
-import a_vert from "./shader/index.vert";
-import { createProgram, createShader, randomColor } from "./utils";
+import a_farg from "./shader/triangle/triangle.frag";
+import a_vert from "./shader/triangle/triangle.vert";
+import { createProgram, createShader } from "./utils";
 
 const canvas = document.getElementById("cvs");
 
@@ -8,46 +8,31 @@ const gl = canvas.getContext("webgl");
 
 const vertexShader = createShader(gl, gl.VERTEX_SHADER, a_vert);
 
-const fragementShader = createShader(gl, gl.FRAGMENT_SHADER, a_farg);
+const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, a_farg);
 
-const program = createProgram(gl, vertexShader, fragementShader);
+const program = createProgram(gl, vertexShader, fragmentShader);
 
+const points = [1.0, 0.2, 0.3, 0.4, 0.5, 0.6];
+
+// 获取a_position变量的地址
 const a_position = gl.getAttribLocation(program, "a_position");
-const a_screen_size = gl.getAttribLocation(program, "a_screen_size");
-const a_color = gl.getUniformLocation(program, "a_color");
 
-// 赋值canvas宽高
-gl.vertexAttrib2f(a_screen_size, canvas.width, canvas.height);
+// 创建缓冲区对象
+const buffer = gl.createBuffer();
 
-// console.log(a_position, a_screen_size, a_color);
+// 绑定缓冲区对象
+gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 
-gl.clearColor(0.0, 0.0, 0.0, 1);
+// 缓冲区数据
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW);
+
+// 缓冲区数据与a_position绑定
+gl.enableVertexAttribArray(a_position);
+
+// 指定a_position变量的数据格式
+gl.vertexAttribPointer(a_position, 2, gl.FLOAT, false, 0, 0);
+
+gl.clearColor(0.0, 0.0, 0.0, 1.0);
 gl.clear(gl.COLOR_BUFFER_BIT);
 
-const points = [];
-
-canvas.addEventListener("click", (e) => {
-  const x = e.clientX;
-  const y = e.clientY;
-  const color = randomColor();
-
-  points.push({ x, y, color });
-
-  gl.clearColor(0.0, 0.0, 0.0, 1);
-
-  gl.clear(gl.COLOR_BUFFER_BIT);
-
-  for (let i = 0; i < points.length; i++) {
-    const point = points[i];
-    gl.uniform4f(
-      a_color,
-      point.color.r,
-      point.color.g,
-      point.color.b,
-      point.color.a
-    );
-    gl.vertexAttrib2f(a_position, point.x, point.y);
-
-    gl.drawArrays(gl.POINTS, 0, 1);
-  }
-});
+gl.drawArrays(gl.TRIANGLES, 0, 3);
