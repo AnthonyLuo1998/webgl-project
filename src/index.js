@@ -39,13 +39,29 @@ canvas.addEventListener("click", (e) => {
   points.push(x, y);
 
   // 一个点包含x,y两个坐标，所以三个点成一个三角形，所以需要提供6个坐标
-  if (points.length % 6 === 0) {
-    console.log("draw");
-    console.log(points);
+  // if (points.length % 6 === 0) {
+  //   console.log("draw");
+  //   console.log(points);
+  //   // 缓冲区数据
+  //   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW);
+  //   gl.clear(gl.COLOR_BUFFER_BIT);
+  //   gl.drawArrays(gl.TRIANGLES, 0, points.length / 2);
+  // }
+
+  // 画带状线段
+  // if (points.length > 0) {
+  //   // 缓冲区数据
+  //   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW);
+  //   gl.clear(gl.COLOR_BUFFER_BIT);
+  //   gl.drawArrays(gl.LINE_STRIP, 0, points.length / 2);
+  // }
+
+  // 画环状线段
+  if (points.length > 0) {
     // 缓冲区数据
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.drawArrays(gl.TRIANGLES, 0, points.length / 2);
+    gl.drawArrays(gl.LINE_LOOP, 0, points.length / 2);
   }
 });
 
